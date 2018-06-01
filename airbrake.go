@@ -1,4 +1,4 @@
-package airbrake
+package airbrake_hook
 
 import (
 	"errors"
@@ -6,8 +6,8 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/airbrake/gobrake"
 	"github.com/sirupsen/logrus"
+	"gopkg.in/airbrake/gobrake.v2"
 )
 
 // AirbrakeHook to send exceptions to an exception-tracking service compatible
@@ -17,14 +17,7 @@ type airbrakeHook struct {
 }
 
 func NewHook(projectID int64, apiKey, env string) *airbrakeHook {
-	return NewCustomHook(projectID, apiKey, env, "")
-}
-
-func NewCustomHook(projectID int64, apiKey, env, host string) *airbrakeHook {
 	airbrake := gobrake.NewNotifier(projectID, apiKey)
-	if host != "" {
-		airbrake.SetHost(host)
-	}
 
 	airbrake.AddFilter(func(notice *gobrake.Notice) *gobrake.Notice {
 		if env == "development" {
@@ -33,6 +26,12 @@ func NewCustomHook(projectID int64, apiKey, env, host string) *airbrakeHook {
 		notice.Context["environment"] = env
 		return notice
 	})
+
+	return NewCustomHook(airbrake)
+}
+
+func NewCustomHook(airbrake *gobrake.Notifier) *airbrakeHook {
+
 	hook := &airbrakeHook{
 		Airbrake: airbrake,
 	}
