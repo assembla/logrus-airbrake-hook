@@ -17,7 +17,15 @@ type airbrakeHook struct {
 }
 
 func NewHook(projectID int64, apiKey, env string) *airbrakeHook {
+	return NewCustomHook(projectID, apiKey, env, "")
+}
+
+func NewCustomHook(projectID int64, apiKey, env, host string) *airbrakeHook {
 	airbrake := gobrake.NewNotifier(projectID, apiKey)
+	if host != "" {
+		airbrake.SetHost(host)
+	}
+	
 	airbrake.AddFilter(func(notice *gobrake.Notice) *gobrake.Notice {
 		if env == "development" {
 			return nil
