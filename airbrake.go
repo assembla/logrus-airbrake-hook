@@ -1,4 +1,4 @@
-package airbrake // import "gopkg.in/assembla/logrus-airbrake-hook.v3"
+package airbrake // import "github.com/assembla/logrus-airbrake-hook"
 
 import (
 	"errors"
