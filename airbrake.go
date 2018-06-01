@@ -1,4 +1,4 @@
-package airbrake // import "gopkg.in/gemnasium/logrus-airbrake-hook.v3"
+package airbrake // import "gopkg.in/assembla/logrus-airbrake-hook.v3"
 
 import (
 	"errors"
@@ -25,7 +25,7 @@ func NewCustomHook(projectID int64, apiKey, env, host string) *airbrakeHook {
 	if host != "" {
 		airbrake.SetHost(host)
 	}
-	
+
 	airbrake.AddFilter(func(notice *gobrake.Notice) *gobrake.Notice {
 		if env == "development" {
 			return nil
