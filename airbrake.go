@@ -1,4 +1,4 @@
-package airbrake // import "github.com/assembla/logrus-airbrake-hook"
+package airbrake
 
 import (
 	"errors"
